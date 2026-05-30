@@ -1,0 +1,35 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "python.defaultInterpreterPath": "${workspaceFolder}/venv/Scripts/python",
+    "python.terminal.activateEnvironment": true,
+    "editor.formatOnSave": true,
+    "editor.tabSize": 4,
+    "files.exclude": {
+      "**/__pycache__": true,
+      "**/*.pyc": true,
+      "**/venv": false,
+      "**/*.db": false
+    },
+    "liveServer.settings.port": 5500,
+    "liveServer.settings.root": "/frontend",
+    "emmet.includeLanguages": {
+      "html": "html"
+    }
+  },
+  "extensions": {
+    "recommendations": [
+      "ms-python.python",
+      "ms-python.pylint",
+      "ritwickdey.LiveServer",
+      "esbenp.prettier-vscode",
+      "bradlc.vscode-tailwindcss",
+      "formulahendry.auto-rename-tag",
+      "ms-vscode.live-share"
+    ]
+  }
+}

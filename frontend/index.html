@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Archivision AI – Design Your Dream Home With AI</title>
+<meta name="description" content="AI-Powered House Planning, Realistic 3D Models, Cost Estimation and much more. Design your dream home with Archivision AI."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #0B0F1A;
+  --surface: #111827;
+  --card: #1A2235;
+  --border: #1E293B;
+  --primary: #6366F1;
+  --primary-light: #818CF8;
+  --primary-dark: #4F46E5;
+  --accent: #A78BFA;
+  --text: #F1F5F9;
+  --muted: #94A3B8;
+  --danger: #EF4444;
+  --success: #22C55E;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,15,26,.9);backdrop-filter:blur(20px);border-bottom:1px solid rgba(99,102,241,.1);padding:0 5%;display:flex;align-items:center;justify-content:space-between;height:68px}
+.nav-logo{font-family:'Outfit',sans-serif;font-weight:800;font-size:1.35rem;display:flex;align-items:center;gap:.5rem;color:var(--text)}
+.nav-logo .icon{font-size:1.3rem}
+.nav-logo .brand{color:var(--primary-light)}
+.nav-links{display:flex;gap:2.2rem;align-items:center}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:.9rem;font-weight:500;transition:color .2s;letter-spacing:.01em}
+.nav-links a:hover{color:var(--text)}
+.btn{padding:.6rem 1.5rem;border-radius:8px;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:.9rem;font-weight:600;transition:all .25s;text-decoration:none;display:inline-flex;align-items:center;gap:.4rem}
+.btn-ghost{background:transparent;color:var(--muted)}
+.btn-ghost:hover{color:var(--text)}
+.btn-primary{background:var(--primary);color:#fff;border-radius:100px;padding:.6rem 1.6rem;font-weight:600}
+.btn-primary:hover{background:var(--primary-dark);transform:translateY(-1px);box-shadow:0 8px 24px rgba(99,102,241,.35)}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text);border-radius:100px}
+.btn-outline:hover{border-color:var(--primary);color:var(--primary-light)}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;padding:100px 5% 80px;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;pointer-events:none}
+.hero-bg::before{content:'';position:absolute;top:10%;right:0;width:55%;height:100%;background:url('hero_house.png') center/cover no-repeat;opacity:.35;mask-image:linear-gradient(to left,rgba(0,0,0,.8),transparent 80%)}
+.hero-bg::after{content:'';position:absolute;top:20%;right:15%;width:400px;height:400px;background:radial-gradient(circle,rgba(99,102,241,.15) 0%,transparent 70%);border-radius:50%}
+.grid-overlay{position:absolute;inset:0;background-color:transparent;background-image:linear-gradient(30deg,rgba(99,102,241,.08) 12%,transparent 12.5%,transparent 87%,rgba(99,102,241,.08) 87.5%,rgba(99,102,241,.08)),linear-gradient(150deg,rgba(99,102,241,.08) 12%,transparent 12.5%,transparent 87%,rgba(99,102,241,.08) 87.5%,rgba(99,102,241,.08)),linear-gradient(30deg,rgba(99,102,241,.08) 12%,transparent 12.5%,transparent 87%,rgba(99,102,241,.08) 87.5%,rgba(99,102,241,.08)),linear-gradient(150deg,rgba(99,102,241,.08) 12%,transparent 12.5%,transparent 87%,rgba(99,102,241,.08) 87.5%,rgba(99,102,241,.08)),linear-gradient(60deg,rgba(99,102,241,.03) 25%,transparent 25.5%,transparent 75%,rgba(99,102,241,.03) 75%,rgba(99,102,241,.03)),linear-gradient(60deg,rgba(99,102,241,.03) 25%,transparent 25.5%,transparent 75%,rgba(99,102,241,.03) 75%,rgba(99,102,241,.03));background-size:60px 104px;background-position:0 0,0 0,30px 52px,30px 52px,0 0,30px 52px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black,transparent);z-index:1}
+
+.hero-content{position:relative;max-width:620px;z-index:2}
+h1{font-family:'Outfit',sans-serif;font-weight:900;font-size:clamp(2.6rem,5.5vw,4rem);line-height:1.08;letter-spacing:-.03em;margin-bottom:1.8rem}
+h1 .highlight{background:linear-gradient(135deg,var(--primary-light),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-features{list-style:none;margin-bottom:2.5rem}
+.hero-features li{color:var(--muted);font-size:.95rem;line-height:2;display:flex;align-items:center;gap:.6rem}
+.hero-features li::before{content:'';width:6px;height:6px;background:var(--primary);border-radius:50%;flex-shrink:0}
+.hero-cta{display:flex;gap:1rem;flex-wrap:wrap;align-items:center}
+.hero-cta .btn-primary{font-size:1rem;padding:.85rem 2.2rem}
+
+/* FEATURES */
+.section{padding:100px 5%}
+.section-label{font-size:.8rem;letter-spacing:.15em;text-transform:uppercase;color:var(--primary-light);font-weight:600;margin-bottom:.8rem}
+.section-title{font-family:'Outfit',sans-serif;font-weight:800;font-size:clamp(1.8rem,4vw,2.6rem);letter-spacing:-.03em;margin-bottom:1rem}
+.section-sub{color:var(--muted);font-size:1rem;line-height:1.7;max-width:540px;margin-bottom:3.5rem}
+.features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.2rem}
+.feature-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.8rem;transition:all .3s;position:relative;overflow:hidden}
+.feature-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--primary),transparent);opacity:0;transition:opacity .3s}
+.feature-card:hover{border-color:rgba(99,102,241,.3);transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,0,0,.3)}
+.feature-card:hover::before{opacity:1}
+.feature-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:1.2rem}
+.icon-purple{background:rgba(99,102,241,.15);color:var(--primary-light)}
+.icon-blue{background:rgba(59,130,246,.15);color:#60A5FA}
+.icon-teal{background:rgba(20,184,166,.15);color:#2DD4BF}
+.feature-card h3{font-family:'Outfit',sans-serif;font-size:1.05rem;font-weight:700;margin-bottom:.6rem}
+.feature-card p{color:var(--muted);font-size:.88rem;line-height:1.6}
+
+/* STEPS */
+.steps-bg{background:var(--surface)}
+.steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2rem}
+.step{text-align:center;padding:2rem 1.5rem}
+.step-num{font-family:'Outfit',sans-serif;font-size:3.5rem;font-weight:900;color:rgba(99,102,241,.15);line-height:1;margin-bottom:1rem}
+.step-icon{font-size:1.8rem;margin-bottom:.8rem}
+.step h3{font-family:'Outfit',sans-serif;font-weight:700;font-size:1rem;margin-bottom:.5rem}
+.step p{color:var(--muted);font-size:.85rem;line-height:1.6}
+
+/* AUTH MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(6px)}
+.modal-overlay.active{opacity:1;pointer-events:all}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2.5rem;width:100%;max-width:440px;position:relative;transform:translateY(20px);transition:transform .3s}
+.modal-overlay.active .modal{transform:translateY(0)}
+.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.2rem;padding:.3rem;border-radius:6px;transition:color .2s}
+.modal-close:hover{color:var(--text)}
+.modal-title{font-family:'Outfit',sans-serif;font-size:1.5rem;font-weight:800;margin-bottom:.3rem}
+.modal-sub{color:var(--muted);font-size:.9rem;margin-bottom:2rem}
+.tabs{display:flex;gap:0;background:var(--surface);border-radius:10px;padding:.3rem;margin-bottom:2rem}
+.tab{flex:1;padding:.6rem;text-align:center;border:none;background:none;color:var(--muted);cursor:pointer;border-radius:8px;font-family:'Inter',sans-serif;font-size:.9rem;font-weight:500;transition:all .2s}
+.tab.active{background:var(--primary);color:#fff;font-weight:700}
+.form-group{margin-bottom:1.2rem}
+.form-group label{display:block;font-size:.8rem;font-weight:500;color:var(--muted);margin-bottom:.4rem;letter-spacing:.04em}
+.form-group input{width:100%;padding:.75rem 1rem;background:var(--surface);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'Inter',sans-serif;font-size:.95rem;outline:none;transition:border-color .2s}
+.form-group input:focus{border-color:var(--primary)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.error-msg{color:var(--danger);font-size:.82rem;margin-top:.4rem;display:none}
+.error-msg.visible{display:block}
+.success-msg{color:var(--success);font-size:.82rem;margin-top:.4rem;display:none;text-align:center}
+.success-msg.visible{display:block}
+.divider{text-align:center;color:var(--muted);font-size:.8rem;margin:1.2rem 0;position:relative}
+.divider::before,.divider::after{content:'';position:absolute;top:50%;width:42%;height:1px;background:var(--border)}
+.divider::before{left:0}.divider::after{right:0}
+
+/* FOOTER */
+footer{background:var(--surface);border-top:1px solid var(--border);padding:3rem 5%;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.footer-logo{font-family:'Outfit',sans-serif;font-weight:800;font-size:1.1rem;color:var(--primary-light)}
+footer p{color:var(--muted);font-size:.85rem}
+
+@media(max-width:768px){
+  .hero-stats{gap:1.5rem;flex-wrap:wrap}
+  .form-row{grid-template-columns:1fr}
+  .nav-links a:not(.btn){display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav>
+  <div class="nav-logo"><span class="icon">🏠</span> <span>Archi</span><span class="brand">vision</span> AI</div>
+  <div class="nav-links">
+    <a href="#features">Home</a>
+    <a href="#features">Features</a>
+    <a href="#how-it-works">Pricing</a>
+    <a href="#how-it-works">About</a>
+    <button class="btn btn-primary" onclick="openModal('register')">Get Started</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="grid-overlay"></div>
+  </div>
+  <div class="hero-content">
+    <h1>Design Your<br><span class="highlight">Dream Home</span><br>With AI</h1>
+    <ul class="hero-features">
+      <li>AI-Powered House Planning</li>
+      <li>Realistic 3D Models</li>
+      <li>Cost Estimation</li>
+      <li>And Much More…</li>
+    </ul>
+    <div class="hero-cta">
+      <button class="btn btn-primary" onclick="openModal('register')">Start Planning →</button>
+      <button class="btn btn-outline" onclick="openModal('login')">Sign In</button>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="section" id="features">
+  <div class="section-label">Platform Features</div>
+  <div class="section-title">Everything You Need to<br>Plan Your Dream Home</div>
+  <p class="section-sub">From plot upload to 3D walkthrough — all in one intelligent platform.</p>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon icon-purple">🧠</div>
+      <h3>AI Layout Generation</h3>
+      <p>Intelligent algorithms allocate rooms, parking, and open spaces based on your plot dimensions and requirements.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon icon-blue">🏛️</div>
+      <h3>3D Building Visualization</h3>
+      <p>Explore your building in interactive 3D powered by Three.js. Rotate, zoom and navigate through every angle.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon icon-teal">🎨</div>
+      <h3>Smart Color Themes</h3>
+      <p>AI-recommended color palettes for walls, roofs, floors and trims. Modern, Warm, Earthy and more.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon icon-purple">📐</div>
+      <h3>2D Floor Plan Editor</h3>
+      <p>Visual floor plan with labeled rooms, drag-to-edit shapes, 8-way handles, and interactive walkthroughs.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon icon-blue">💰</div>
+      <h3>Budget Estimation</h3>
+      <p>Instant cost breakdowns — construction, materials, interior and miscellaneous — based on building type and size.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon icon-teal">🏗️</div>
+      <h3>8 Building Types</h3>
+      <p>House, Apartment, Office, Shop, Restaurant, Mall, Hotel and Commercial buildings — all intelligently supported.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section steps-bg" id="how-it-works">
+  <div style="padding:0 5%">
+    <div class="section-label">Workflow</div>
+    <div class="section-title">From Idea to 3D in Minutes</div>
+    <p class="section-sub">A streamlined process that turns your vision into a visual reality.</p>
+    <div class="steps-grid">
+      <div class="step"><div class="step-num">01</div><div class="step-icon">📏</div><h3>Enter Plot Details</h3><p>Input your plot dimensions, floors, rooms, and style preferences.</p></div>
+      <div class="step"><div class="step-num">02</div><div class="step-icon">🤖</div><h3>AI Generates Design</h3><p>Our AI creates your 2D floor plan and 3D model with smart room allocation.</p></div>
+      <div class="step"><div class="step-num">03</div><div class="step-icon">✏️</div><h3>Edit & Customize</h3><p>Drag, resize, recolor rooms. Add doors, windows, and walkthroughs.</p></div>
+      <div class="step"><div class="step-num">04</div><div class="step-icon">🏠</div><h3>View in 3D</h3><p>Explore your design in real-time 3D with exterior walls, stairs, and balconies.</p></div>
+      <div class="step"><div class="step-num">05</div><div class="step-icon">💾</div><h3>Save & Export</h3><p>Save unlimited projects to the cloud. Export floor plan images anytime.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">🏠 Archivision AI</div>
+  <p>Built with AI, Three.js and Flask. Intelligent home design for everyone.</p>
+  <p style="color:var(--muted);font-size:.8rem">© 2024 Archivision AI</p>
+</footer>
+
+<!-- AUTH MODAL -->
+<div class="modal-overlay" id="authModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title" id="modalTitle">Welcome Back</div>
+    <div class="modal-sub" id="modalSub">Sign in to your Archivision AI account</div>
+    <div class="tabs">
+      <button class="tab active" id="loginTab" onclick="switchTab('login')">Sign In</button>
+      <button class="tab" id="registerTab" onclick="switchTab('register')">Register</button>
+    </div>
+
+    <!-- LOGIN FORM -->
+    <div id="loginForm">
+      <div class="form-group">
+        <label>EMAIL ADDRESS</label>
+        <input type="email" id="loginEmail" placeholder="you@example.com"/>
+      </div>
+      <div class="form-group">
+        <label>PASSWORD</label>
+        <input type="password" id="loginPassword" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()"/>
+      </div>
+      <div class="error-msg" id="loginError"></div>
+      <div class="success-msg" id="loginSuccess"></div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;padding:.85rem;font-size:1rem;margin-top:.5rem;border-radius:10px" onclick="doLogin()">Sign In →</button>
+      <div class="divider">or</div>
+      <button class="btn btn-outline" style="width:100%;justify-content:center;padding:.85rem;border-radius:10px" onclick="switchTab('register')">Create New Account</button>
+    </div>
+
+    <!-- REGISTER FORM -->
+    <div id="registerForm" style="display:none">
+      <div class="form-row">
+        <div class="form-group"><label>FIRST NAME</label><input type="text" id="regFirst" placeholder="John"/></div>
+        <div class="form-group"><label>LAST NAME</label><input type="text" id="regLast" placeholder="Doe"/></div>
+      </div>
+      <div class="form-group"><label>USERNAME</label><input type="text" id="regUsername" placeholder="johndoe"/></div>
+      <div class="form-group"><label>EMAIL ADDRESS</label><input type="email" id="regEmail" placeholder="you@example.com"/></div>
+      <div class="form-group"><label>PASSWORD</label><input type="password" id="regPassword" placeholder="Min. 6 characters" onkeydown="if(event.key==='Enter')doRegister()"/></div>
+      <div class="error-msg" id="registerError"></div>
+      <div class="success-msg" id="registerSuccess"></div>
+      <button class="btn btn-primary" style="width:100%;justify-content:center;padding:.85rem;font-size:1rem;margin-top:.5rem;border-radius:10px" onclick="doRegister()">Create Account →</button>
+      <div class="divider">or</div>
+      <button class="btn btn-outline" style="width:100%;justify-content:center;padding:.85rem;border-radius:10px" onclick="switchTab('login')">Already have an account</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = 'http://localhost:5000/api';
+
+function openModal(tab) {
+  document.getElementById('authModal').classList.add('active');
+  switchTab(tab);
+}
+function closeModal() {
+  document.getElementById('authModal').classList.remove('active');
+}
+document.getElementById('authModal').addEventListener('click', e => {
+  if (e.target === document.getElementById('authModal')) closeModal();
+});
+
+function switchTab(tab) {
+  const isLogin = tab === 'login';
+  document.getElementById('loginForm').style.display = isLogin ? '' : 'none';
+  document.getElementById('registerForm').style.display = isLogin ? 'none' : '';
+  document.getElementById('loginTab').classList.toggle('active', isLogin);
+  document.getElementById('registerTab').classList.toggle('active', !isLogin);
+  document.getElementById('modalTitle').textContent = isLogin ? 'Welcome Back' : 'Create Account';
+  document.getElementById('modalSub').textContent = isLogin ? 'Sign in to your Archivision AI account' : 'Start designing your dream home today';
+  clearErrors();
+}
+
+function clearErrors() {
+  ['loginError','loginSuccess','registerError','registerSuccess'].forEach(id => {
+    const el = document.getElementById(id);
+    el.classList.remove('visible'); el.textContent = '';
+  });
+}
+
+async function doLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  const errEl = document.getElementById('loginError');
+  errEl.classList.remove('visible');
+  if (!email || !password) { errEl.textContent = 'Please fill in all fields'; errEl.classList.add('visible'); return; }
+  try {
+    const res = await fetch(`${API}/auth/login`, {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({email, password})
+    });
+    const data = await res.json();
+    if (!res.ok) { errEl.textContent = data.error || 'Login failed'; errEl.classList.add('visible'); return; }
+    localStorage.setItem('bv_token', data.token);
+    localStorage.setItem('bv_user', JSON.stringify(data.user));
+    document.getElementById('loginSuccess').textContent = 'Login successful! Redirecting…';
+    document.getElementById('loginSuccess').classList.add('visible');
+    setTimeout(() => window.location.href = 'dashboard.html', 800);
+  } catch {
+    errEl.textContent = 'Cannot connect to server. Make sure backend is running.';
+    errEl.classList.add('visible');
+  }
+}
+
+async function doRegister() {
+  const first_name = document.getElementById('regFirst').value.trim();
+  const last_name = document.getElementById('regLast').value.trim();
+  const username = document.getElementById('regUsername').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const password = document.getElementById('regPassword').value;
+  const errEl = document.getElementById('registerError');
+  errEl.classList.remove('visible');
+  if (!username || !email || !password) { errEl.textContent = 'Username, email and password are required'; errEl.classList.add('visible'); return; }
+  if (password.length < 6) { errEl.textContent = 'Password must be at least 6 characters'; errEl.classList.add('visible'); return; }
+  try {
+    const res = await fetch(`${API}/auth/register`, {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({first_name, last_name, username, email, password})
+    });
+    const data = await res.json();
+    if (!res.ok) { errEl.textContent = data.error || 'Registration failed'; errEl.classList.add('visible'); return; }
+    localStorage.setItem('bv_token', data.token);
+    localStorage.setItem('bv_user', JSON.stringify(data.user));
+    document.getElementById('registerSuccess').textContent = 'Account created! Redirecting…';
+    document.getElementById('registerSuccess').classList.add('visible');
+    setTimeout(() => window.location.href = 'dashboard.html', 800);
+  } catch {
+    errEl.textContent = 'Cannot connect to server. Make sure backend is running.';
+    errEl.classList.add('visible');
+  }
+}
+
+// Redirect if already logged in
+if (localStorage.getItem('bv_token')) window.location.href = 'dashboard.html';
+</script>
+</body>
+</html>

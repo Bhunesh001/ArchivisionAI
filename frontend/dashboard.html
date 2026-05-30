@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dashboard – Archivision AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#0B0F1A;--surface:#111827;--card:#1A2235;--border:#1E293B;--gold:#6366F1;--gold-light:#818CF8;--blue:#3B82F6;--teal:#14B8A6;--text:#F1F5F9;--muted:#94A3B8;--danger:#EF4444;--success:#22C55E}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex}
+
+/* SIDEBAR */
+.sidebar{width:260px;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;top:0;left:0;height:100vh;z-index:50;transition:transform .3s}
+.sidebar-logo{padding:1.5rem;display:flex;align-items:center;gap:.6rem;border-bottom:1px solid var(--border)}
+.sidebar-logo span{font-family:'Outfit',sans-serif;font-weight:800;font-size:1.2rem;color:var(--gold)}
+.sidebar-logo em{color:var(--text);font-style:normal}
+.sidebar-nav{padding:1.2rem 0;flex:1;overflow-y:auto}
+.nav-section{padding:.4rem 1.2rem;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:.3rem;margin-top:.8rem}
+.nav-item{display:flex;align-items:center;gap:.7rem;padding:.7rem 1.2rem;color:var(--muted);text-decoration:none;font-size:.9rem;transition:all .2s;border-right:3px solid transparent;cursor:pointer}
+.nav-item:hover{color:var(--text);background:rgba(255,255,255,.04)}
+.nav-item.active{color:var(--gold);background:rgba(212,168,67,.08);border-right-color:var(--gold)}
+.nav-item .icon{width:20px;text-align:center;font-size:1rem}
+.sidebar-user{padding:1.2rem;border-top:1px solid var(--border);display:flex;align-items:center;gap:.8rem}
+.user-avatar{width:36px;height:36px;background:linear-gradient(135deg,var(--gold),#A78BFA);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;color:#fff;flex-shrink:0}
+.user-info{flex:1;min-width:0}
+.user-name{font-size:.85rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.user-email{font-size:.75rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.logout-btn{background:none;border:none;color:var(--muted);cursor:pointer;font-size:.9rem;padding:.2rem;transition:color .2s}
+.logout-btn:hover{color:var(--danger)}
+
+/* MAIN */
+.main{margin-left:260px;flex:1;display:flex;flex-direction:column;min-height:100vh}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:0 2rem;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:40}
+.topbar-title{font-family:'Outfit',sans-serif;font-size:1.1rem;font-weight:700}
+.topbar-right{display:flex;align-items:center;gap:1rem}
+
+.content{padding:2rem;flex:1}
+.page{display:none}
+.page.active{display:block}
+
+/* STAT CARDS */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.2rem;margin-bottom:2rem}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:1.5rem;position:relative;overflow:hidden}
+.stat-card::after{content:'';position:absolute;top:0;right:0;width:80px;height:80px;border-radius:0 14px 0 80px;opacity:.06}
+.stat-card.gold::after{background:var(--gold)}
+.stat-card.blue::after{background:var(--blue)}
+.stat-card.teal::after{background:var(--teal)}
+.stat-card.red::after{background:var(--danger)}
+.stat-icon{font-size:1.5rem;margin-bottom:.8rem}
+.stat-val{font-family:'Outfit',sans-serif;font-size:2rem;font-weight:800;line-height:1}
+.stat-label{color:var(--muted);font-size:.82rem;margin-top:.3rem}
+
+/* SECTION HEADERS */
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem}
+.section-header h2{font-family:'Outfit',sans-serif;font-size:1.1rem;font-weight:700}
+
+/* BUTTONS */
+.btn{padding:.55rem 1.2rem;border-radius:8px;border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:.875rem;font-weight:500;transition:all .2s;display:inline-flex;align-items:center;gap:.4rem}
+.btn-primary{background:var(--gold);color:#fff;font-weight:700}
+.btn-primary:hover{background:var(--gold-light);transform:translateY(-1px)}
+.btn-outline{background:transparent;border:1px solid var(--border);color:var(--text)}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold)}
+.btn-danger{background:transparent;border:1px solid var(--danger);color:var(--danger)}
+.btn-danger:hover{background:rgba(239,68,68,.1)}
+.btn-sm{padding:.4rem .9rem;font-size:.8rem}
+
+/* PROJECT CARDS */
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.2rem}
+.project-card{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;transition:all .3s;cursor:pointer}
+.project-card:hover{border-color:rgba(212,168,67,.35);transform:translateY(-3px);box-shadow:0 16px 40px rgba(0,0,0,.3)}
+.project-preview{height:160px;background:var(--surface);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.project-preview canvas{width:100%!important;height:100%!important}
+.project-type-badge{position:absolute;top:.6rem;right:.6rem;background:rgba(212,168,67,.15);border:1px solid rgba(212,168,67,.3);color:var(--gold);padding:.2rem .6rem;border-radius:100px;font-size:.7rem;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.project-info{padding:1.2rem}
+.project-name{font-family:'Outfit',sans-serif;font-size:1rem;font-weight:700;margin-bottom:.3rem}
+.project-meta{display:flex;gap:1rem;margin-bottom:.8rem}
+.meta-item{display:flex;align-items:center;gap:.3rem;color:var(--muted);font-size:.78rem}
+.project-actions{display:flex;gap:.5rem}
+.status-dot{width:7px;height:7px;border-radius:50%;display:inline-block;margin-right:.3rem}
+.status-draft{background:#94A3B8}.status-active{background:var(--success)}.status-completed{background:var(--gold)}
+
+/* NEW PROJECT MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(4px)}
+.modal-overlay.active{opacity:1;pointer-events:all}
+.modal{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:2rem;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;position:relative;transform:translateY(20px);transition:transform .3s}
+.modal-overlay.active .modal{transform:translateY(0)}
+.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.1rem;padding:.3rem}
+.modal-close:hover{color:var(--text)}
+.modal h2{font-family:'Outfit',sans-serif;font-size:1.4rem;font-weight:800;margin-bottom:.3rem}
+.modal-sub{color:var(--muted);font-size:.88rem;margin-bottom:1.8rem}
+.form-group{margin-bottom:1.1rem}
+.form-group label{display:block;font-size:.78rem;font-weight:500;color:var(--muted);margin-bottom:.35rem;letter-spacing:.05em}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:.7rem 1rem;background:var(--surface);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.9rem;outline:none;transition:border-color .2s}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--gold)}
+.form-group textarea{resize:vertical;min-height:70px}
+.form-group select option{background:var(--card)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
+.form-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.8rem}
+.range-group{display:flex;align-items:center;gap:.8rem}
+.range-group input[type=range]{flex:1;accent-color:var(--gold)}
+.range-val{color:var(--gold);font-weight:700;min-width:45px;text-align:right}
+
+/* BUILDING TYPE SELECT */
+.building-types{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;margin-top:.4rem}
+.type-btn{padding:.5rem;background:var(--surface);border:1px solid var(--border);border-radius:8px;cursor:pointer;text-align:center;transition:all .2s;font-family:'DM Sans',sans-serif;color:var(--muted);font-size:.75rem}
+.type-btn:hover{border-color:var(--gold);color:var(--gold)}
+.type-btn.selected{background:rgba(212,168,67,.12);border-color:var(--gold);color:var(--gold)}
+.type-btn .type-icon{font-size:1.3rem;display:block;margin-bottom:.2rem}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:4rem 2rem;color:var(--muted)}
+.empty-icon{font-size:3rem;margin-bottom:1rem}
+.empty-state h3{font-family:'Outfit',sans-serif;font-size:1.2rem;font-weight:700;color:var(--text);margin-bottom:.5rem}
+.empty-state p{font-size:.9rem;line-height:1.6;margin-bottom:1.5rem}
+
+/* TOAST */
+.toast{position:fixed;bottom:1.5rem;right:1.5rem;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:1rem 1.5rem;display:flex;align-items:center;gap:.8rem;z-index:999;transform:translateY(100px);opacity:0;transition:all .3s;max-width:320px}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.success{border-color:var(--success)}
+.toast.error{border-color:var(--danger)}
+
+/* PROFILE PAGE */
+.profile-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:2rem;max-width:500px}
+.profile-avatar{width:72px;height:72px;background:linear-gradient(135deg,var(--gold),#A78BFA);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.8rem;color:#fff;margin-bottom:1.5rem}
+
+/* LOADING */
+.spinner{width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .6s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-overlay{position:absolute;inset:0;background:rgba(10,14,26,.7);display:flex;align-items:center;justify-content:center;z-index:10;border-radius:16px}
+
+@media(max-width:768px){.sidebar{transform:translateX(-100%)}.main{margin-left:0}.form-row,.form-row-3,.building-types{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <span>🏠</span>
+    <div><span>Archi</span><em>vision</em><span>AI</span></div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">Main</div>
+    <a class="nav-item active" onclick="showPage('dashboard')"><span class="icon">📊</span> Dashboard</a>
+    <a class="nav-item" onclick="showPage('projects')"><span class="icon">📁</span> Projects</a>
+    <a class="nav-item" onclick="showPage('newproject')"><span class="icon">📐</span> Planner</a>
+    <div class="nav-section">Tools</div>
+    <a class="nav-item" onclick="showPage('projects')"><span class="icon">🧊</span> 3D Viewer</a>
+    <a class="nav-item" onclick="showPage('dashboard')"><span class="icon">💰</span> Budget</a>
+    <a class="nav-item" onclick="showPage('projects')"><span class="icon">💾</span> Export</a>
+    <div class="nav-section">Account</div>
+    <a class="nav-item" onclick="showPage('profile')"><span class="icon">👤</span> Profile</a>
+    <a class="nav-item"><span class="icon">⚙️</span> Settings</a>
+  </nav>
+  <div class="sidebar-user">
+    <div class="user-avatar" id="sidebarAvatar">U</div>
+    <div class="user-info">
+      <div class="user-name" id="sidebarName">Loading…</div>
+      <div class="user-email" id="sidebarEmail"></div>
+    </div>
+    <button class="logout-btn" onclick="logout()" title="Logout">⎋</button>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title" id="pageTitle">Dashboard</div>
+    <div class="topbar-right">
+      <button class="btn btn-primary btn-sm" onclick="showPage('newproject')">➕ New Project</button>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- DASHBOARD PAGE -->
+    <div class="page active" id="page-dashboard">
+      <div class="stats-row">
+        <div class="stat-card gold"><div class="stat-icon">🏗️</div><div class="stat-val" id="statTotal">0</div><div class="stat-label">Total Projects</div></div>
+        <div class="stat-card blue"><div class="stat-icon">✏️</div><div class="stat-val" id="statDraft">0</div><div class="stat-label">In Progress</div></div>
+        <div class="stat-card teal"><div class="stat-icon">✅</div><div class="stat-val" id="statDone">0</div><div class="stat-label">Completed</div></div>
+        <div class="stat-card red"><div class="stat-icon">💰</div><div class="stat-val" id="statBudget">$0</div><div class="stat-label">Total Est. Budget</div></div>
+      </div>
+      <div class="section-header">
+        <h2>Recent Projects</h2>
+        <button class="btn btn-outline btn-sm" onclick="showPage('projects')">View All</button>
+      </div>
+      <div class="projects-grid" id="recentProjects"></div>
+    </div>
+
+    <!-- PROJECTS PAGE -->
+    <div class="page" id="page-projects">
+      <div class="section-header">
+        <h2>All Projects</h2>
+        <button class="btn btn-primary btn-sm" onclick="showPage('newproject')">➕ New Project</button>
+      </div>
+      <div class="projects-grid" id="allProjects"></div>
+    </div>
+
+    <!-- NEW PROJECT PAGE -->
+    <div class="page" id="page-newproject">
+      <div style="max-width:640px">
+        <h2 style="font-family:'Outfit',sans-serif;font-size:1.5rem;font-weight:800;margin-bottom:.4rem">Create New Project</h2>
+        <p style="color:var(--muted);font-size:.9rem;margin-bottom:2rem">Fill in your plot details and requirements. AI will generate your floor plan instantly.</p>
+
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:16px;padding:2rem">
+          <div class="form-group">
+            <label>PROJECT NAME</label>
+            <input type="text" id="npName" placeholder="e.g. My Dream House"/>
+          </div>
+          <div class="form-group">
+            <label>DESCRIPTION (OPTIONAL)</label>
+            <textarea id="npDesc" placeholder="Brief description of your project…"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>BUILDING TYPE</label>
+            <div class="building-types">
+              <div class="type-btn selected" data-type="house" onclick="selectType(this)"><span class="type-icon">🏠</span>House</div>
+              <div class="type-btn" data-type="apartment" onclick="selectType(this)"><span class="type-icon">🏢</span>Apartment</div>
+              <div class="type-btn" data-type="office" onclick="selectType(this)"><span class="type-icon">🏛️</span>Office</div>
+              <div class="type-btn" data-type="shop" onclick="selectType(this)"><span class="type-icon">🏪</span>Shop</div>
+              <div class="type-btn" data-type="restaurant" onclick="selectType(this)"><span class="type-icon">🍽️</span>Restaurant</div>
+              <div class="type-btn" data-type="mall" onclick="selectType(this)"><span class="type-icon">🏬</span>Mall</div>
+              <div class="type-btn" data-type="hotel" onclick="selectType(this)"><span class="type-icon">🏨</span>Hotel</div>
+              <div class="type-btn" data-type="commercial" onclick="selectType(this)"><span class="type-icon">🏗️</span>Commercial</div>
+            </div>
+          </div>
+
+          <div class="form-row" style="margin-top:1rem">
+            <div class="form-group">
+              <label>PLOT WIDTH (ft)</label>
+              <input type="number" id="npWidth" value="60" min="10" max="500"/>
+            </div>
+            <div class="form-group">
+              <label>PLOT LENGTH (ft)</label>
+              <input type="number" id="npLength" value="80" min="10" max="500"/>
+            </div>
+          </div>
+
+          <div class="form-row-3">
+            <div class="form-group">
+              <label>FLOORS</label>
+              <input type="number" id="npFloors" value="1" min="1" max="50"/>
+            </div>
+            <div class="form-group">
+              <label>ROOMS</label>
+              <input type="number" id="npRooms" value="5" min="1" max="50"/>
+            </div>
+            <div class="form-group">
+              <label>PARKING</label>
+              <input type="number" id="npParking" value="2" min="0" max="100"/>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>OPEN SPACE / GARDEN (%)</label>
+            <div class="range-group">
+              <input type="range" id="npOpenRange" min="0" max="60" value="20" oninput="document.getElementById('npOpenVal').textContent=this.value+'%';document.getElementById('npOpen').value=this.value"/>
+              <span class="range-val" id="npOpenVal">20%</span>
+            </div>
+            <input type="hidden" id="npOpen" value="20"/>
+          </div>
+
+          <div class="form-group">
+            <label>COLOR THEME</label>
+            <select id="npColor">
+              <option value="modern">Modern – Dark & Steel Blue</option>
+              <option value="warm">Warm – Gold & Earthy Tones</option>
+              <option value="cool">Cool – Sky Blue & Teal</option>
+              <option value="minimalist">Minimalist – Black & White</option>
+              <option value="earthy">Earthy – Brown & Natural</option>
+            </select>
+          </div>
+
+          <div id="npError" style="color:var(--danger);font-size:.85rem;margin-bottom:.8rem;display:none"></div>
+          <button class="btn btn-primary" style="width:100%;justify-content:center;padding:.85rem;font-size:1rem" id="createBtn" onclick="createProject()">
+            🤖 Generate AI Floor Plan →
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROFILE PAGE -->
+    <div class="page" id="page-profile">
+      <div class="profile-card">
+        <div class="profile-avatar" id="profileAvatar">U</div>
+        <h2 style="font-family:'Outfit',sans-serif;font-weight:800;margin-bottom:1.5rem">Your Profile</h2>
+        <div class="form-row">
+          <div class="form-group"><label>FIRST NAME</label><input type="text" id="pfFirst"/></div>
+          <div class="form-group"><label>LAST NAME</label><input type="text" id="pfLast"/></div>
+        </div>
+        <div class="form-group"><label>USERNAME</label><input type="text" id="pfUsername" disabled style="opacity:.5"/></div>
+        <div class="form-group"><label>EMAIL</label><input type="email" id="pfEmail" disabled style="opacity:.5"/></div>
+        <button class="btn btn-primary" onclick="saveProfile()">Save Changes</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><span id="toastIcon">✓</span><span id="toastMsg"></span></div>
+
+<script>
+const API = 'http://localhost:5000/api';
+let token = localStorage.getItem('bv_token');
+let currentUser = JSON.parse(localStorage.getItem('bv_user') || '{}');
+let allProjects = [];
+let selectedType = 'house';
+
+// Auth guard
+if (!token) window.location.href = 'index.html';
+
+// Init
+document.addEventListener('DOMContentLoaded', () => {
+  setUserUI();
+  loadProjects();
+  loadProfile();
+});
+
+function setUserUI() {
+  const initials = ((currentUser.first_name||'')[0]||(currentUser.username||'U')[0]).toUpperCase();
+  document.getElementById('sidebarAvatar').textContent = initials;
+  document.getElementById('profileAvatar').textContent = initials;
+  document.getElementById('sidebarName').textContent = currentUser.first_name ? `${currentUser.first_name} ${currentUser.last_name||''}`.trim() : currentUser.username;
+  document.getElementById('sidebarEmail').textContent = currentUser.email || '';
+}
+
+function authHeaders() {
+  return {'Content-Type':'application/json','Authorization':'Bearer '+token};
+}
+
+async function loadProjects() {
+  try {
+    const res = await fetch(`${API}/projects`, {headers: authHeaders()});
+    if (res.status === 401) { logout(); return; }
+    allProjects = await res.json();
+    renderStats();
+    renderProjects('recentProjects', allProjects.slice(0, 6));
+    renderProjects('allProjects', allProjects);
+  } catch(e) {
+    showToast('Cannot reach server. Is the backend running?', 'error');
+  }
+}
+
+function renderStats() {
+  document.getElementById('statTotal').textContent = allProjects.length;
+  document.getElementById('statDraft').textContent = allProjects.filter(p=>p.status==='draft').length;
+  document.getElementById('statDone').textContent = allProjects.filter(p=>p.status==='completed').length;
+  const total = allProjects.reduce((s,p)=>s+(p.budget_estimate||0),0);
+  document.getElementById('statBudget').textContent = total >= 1e6 ? `$${(total/1e6).toFixed(1)}M` : total >= 1000 ? `$${(total/1000).toFixed(0)}K` : `$${total}`;
+}
+
+const BUILDING_ICONS = {house:'🏠',apartment:'🏢',office:'🏛️',shop:'🏪',restaurant:'🍽️',mall:'🏬',hotel:'🏨',commercial:'🏗️'};
+
+function renderProjects(containerId, projects) {
+  const el = document.getElementById(containerId);
+  if (!projects.length) {
+    el.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">🏗️</div><h3>No projects yet</h3><p>Create your first infrastructure project and let AI generate your floor plan.</p><button class="btn btn-primary" onclick="showPage('newproject')">Create First Project</button></div>`;
+    return;
+  }
+  el.innerHTML = projects.map(p => `
+    <div class="project-card" onclick="openEditor(${p.id})">
+      <div class="project-preview" style="background:linear-gradient(135deg,#1A2235,#111827)">
+        <canvas id="mini-${p.id}" width="300" height="160"></canvas>
+        <div class="project-type-badge">${BUILDING_ICONS[p.building_type]||'🏗️'} ${p.building_type}</div>
+      </div>
+      <div class="project-info">
+        <div class="project-name">${p.name}</div>
+        <div class="project-meta">
+          <span class="meta-item">📐 ${p.plot_area?.toFixed(0)||0} sq ft</span>
+          <span class="meta-item">🏢 ${p.number_of_floors} floor${p.number_of_floors>1?'s':''}</span>
+          <span class="meta-item">💰 $${(p.budget_estimate||0).toLocaleString('en',{maximumFractionDigits:0})}</span>
+        </div>
+        <div class="project-actions" onclick="event.stopPropagation()">
+          <button class="btn btn-primary btn-sm" onclick="openEditor(${p.id})">✏️ Edit</button>
+          <button class="btn btn-outline btn-sm" onclick="deleteProject(${p.id},event)">🗑️</button>
+        </div>
+      </div>
+    </div>
+  `).join('');
+  // Draw mini floor plans
+  setTimeout(() => projects.forEach(p => drawMiniPlan(p)), 50);
+}
+
+function drawMiniPlan(project) {
+  const canvas = document.getElementById(`mini-${project.id}`);
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const fp = project.floor_plan_data;
+  if (!fp || !fp.rooms) return;
+  const scaleX = 300 / fp.plot_width;
+  const scaleY = 160 / fp.plot_length;
+  ctx.clearRect(0,0,300,160);
+  fp.rooms.forEach(r => {
+    ctx.fillStyle = r.color + 'CC';
+    ctx.strokeStyle = '#2A3450';
+    ctx.lineWidth = 1;
+    ctx.fillRect(r.x*scaleX, r.y*scaleY, r.w*scaleX, r.h*scaleY);
+    ctx.strokeRect(r.x*scaleX, r.y*scaleY, r.w*scaleX, r.h*scaleY);
+  });
+}
+
+function selectType(btn) {
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  selectedType = btn.dataset.type;
+}
+
+async function createProject() {
+  const name = document.getElementById('npName').value.trim();
+  const errEl = document.getElementById('npError');
+  errEl.style.display = 'none';
+  if (!name) { errEl.textContent = 'Please enter a project name'; errEl.style.display = 'block'; return; }
+
+  const btn = document.getElementById('createBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> Generating…';
+
+  const body = {
+    name, description: document.getElementById('npDesc').value,
+    building_type: selectedType,
+    plot_width: parseFloat(document.getElementById('npWidth').value) || 60,
+    plot_length: parseFloat(document.getElementById('npLength').value) || 80,
+    number_of_floors: parseInt(document.getElementById('npFloors').value) || 1,
+    number_of_rooms: parseInt(document.getElementById('npRooms').value) || 5,
+    parking_spaces: parseInt(document.getElementById('npParking').value) || 0,
+
+    color_theme: document.getElementById('npColor').value
+  };
+
+  try {
+    const res = await fetch(`${API}/projects`, {method:'POST', headers:authHeaders(), body:JSON.stringify(body)});
+    const data = await res.json();
+    if (!res.ok) { errEl.textContent = data.error || 'Failed to create project'; errEl.style.display='block'; return; }
+    showToast('Project created! Opening editor…', 'success');
+    setTimeout(() => openEditor(data.id), 600);
+  } catch {
+    errEl.textContent = 'Server error. Make sure backend is running.';
+    errEl.style.display = 'block';
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '🤖 Generate AI Floor Plan →';
+  }
+}
+
+async function deleteProject(id, e) {
+  e.stopPropagation();
+  if (!confirm('Delete this project? This cannot be undone.')) return;
+  await fetch(`${API}/projects/${id}`, {method:'DELETE', headers:authHeaders()});
+  showToast('Project deleted', 'success');
+  loadProjects();
+}
+
+function openEditor(id) {
+  window.location.href = `editor.html?id=${id}`;
+}
+
+async function loadProfile() {
+  try {
+    const res = await fetch(`${API}/auth/profile`, {headers:authHeaders()});
+    const u = await res.json();
+    document.getElementById('pfFirst').value = u.first_name || '';
+    document.getElementById('pfLast').value = u.last_name || '';
+    document.getElementById('pfUsername').value = u.username || '';
+    document.getElementById('pfEmail').value = u.email || '';
+  } catch {}
+}
+
+async function saveProfile() {
+  const body = {first_name: document.getElementById('pfFirst').value, last_name: document.getElementById('pfLast').value};
+  const res = await fetch(`${API}/auth/profile`, {method:'PUT', headers:authHeaders(), body:JSON.stringify(body)});
+  if (res.ok) { showToast('Profile updated!', 'success'); } else { showToast('Update failed', 'error'); }
+}
+
+function logout() {
+  localStorage.removeItem('bv_token');
+  localStorage.removeItem('bv_user');
+  window.location.href = 'index.html';
+}
+
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById(`page-${name}`).classList.add('active');
+  const titles = {dashboard:'Dashboard',projects:'My Projects',newproject:'New Project',profile:'Profile'};
+  document.getElementById('pageTitle').textContent = titles[name] || name;
+  if (name === 'projects') { renderProjects('allProjects', allProjects); }
+  if (name === 'dashboard') { loadProjects(); }
+  event?.target?.closest('.nav-item')?.classList.add('active');
+}
+
+let toastTimer;
+function showToast(msg, type='success') {
+  const t = document.getElementById('toast');
+  document.getElementById('toastMsg').textContent = msg;
+  document.getElementById('toastIcon').textContent = type === 'success' ? '✓' : '⚠';
+  t.className = `toast show ${type}`;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.className = 'toast', 3000);
+}
+</script>
+</body>
+</html>

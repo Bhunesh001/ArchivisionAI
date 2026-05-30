@@ -1,0 +1,25 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "▶ Run Backend (Flask)",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/backend/app.py",
+      "console": "integratedTerminal",
+      "env": {
+        "FLASK_ENV": "development",
+        "FLASK_DEBUG": "1"
+      },
+      "cwd": "${workspaceFolder}"
+    },
+    {
+      "name": "🗄 Init Database",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/backend/init_db.py",
+      "console": "integratedTerminal",
+      "cwd": "${workspaceFolder}"
+    }
+  ]
+}

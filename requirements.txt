@@ -1,0 +1,10 @@
+Flask
+Flask-SQLAlchemy
+Flask-JWT-Extended
+Flask-CORS
+python-dotenv
+Werkzeug
+opencv-python
+numpy
+scikit-learn
+Pillow
